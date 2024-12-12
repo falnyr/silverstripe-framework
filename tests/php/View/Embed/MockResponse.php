@@ -56,6 +56,9 @@ class MockResponse implements ResponseInterface
 
     public function getHeaderLine($name)
     {
+        if (strtolower($name) === 'content-type') {
+            return 'text/html; charset=utf-8';
+        }
         return '';
     }
 
