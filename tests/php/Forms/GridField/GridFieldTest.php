@@ -637,7 +637,7 @@ class GridFieldTest extends SapphireTest
         $form = new Form(null, "testForm", $fieldList, new FieldList(), $validator);
 
         // A form that fails validation should display the validation error in the FieldHolder output.
-        $form->validationResult();
+        $form->validate();
         $gridfieldOutput = $gridField->FieldHolder();
         $this->assertStringContainsString('<p class="message ' . ValidationResult::TYPE_ERROR . '">error</p>', $gridfieldOutput);
 
@@ -647,7 +647,7 @@ class GridFieldTest extends SapphireTest
 
         // A form that passes validation should not display a validation error in the FieldHolder output.
         $form->setValidator(new RequiredFields());
-        $form->validationResult();
+        $form->validate();
         $gridfieldOutput = $gridField->FieldHolder();
         $this->assertStringNotContainsString('<p class="message ' . ValidationResult::TYPE_ERROR . '">', $gridfieldOutput);
     }
