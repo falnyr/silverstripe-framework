@@ -20,6 +20,7 @@ use SilverStripe\Security\SecurityToken;
 use SilverStripe\View\AttributesHTML;
 use SilverStripe\View\SSViewer;
 use SilverStripe\View\ViewableData;
+use SilverStripe\Dev\Deprecation;
 
 /**
  * Base class for all forms.
@@ -1244,6 +1245,18 @@ class Form extends ViewableData implements HasRequestHandler
     }
 
     /**
+     * Alias of validate() for backwards compatibility.
+     *
+     * @return ValidationResult
+     * @deprecated 5.4.0 Use validate() instead
+     */
+    public function validationResult()
+    {
+        Deprecation::notice('5.4.0', 'Use validate() instead');
+        return $this->validate();
+    }
+
+    /**
      * Processing that occurs before a form is executed.
      *
      * This includes form validation, if it fails, we throw a ValidationException
@@ -1254,13 +1267,10 @@ class Form extends ViewableData implements HasRequestHandler
      *
      * Triggered through {@link httpSubmission()}.
      *
-     *
      * Note that CSRF protection takes place in {@link httpSubmission()},
      * if it fails the form data will never reach this method.
-     *
-     * @return ValidationResult
-     */
-    public function validationResult()
+    */
+    public function validate(): ValidationResult
     {
         // Automatically pass if there is no validator, or the clicked button is exempt
         // Note: Soft support here for validation with absent request handler
