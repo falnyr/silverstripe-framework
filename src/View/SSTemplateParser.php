@@ -3748,7 +3748,9 @@ class SSTemplateParser extends Parser implements TemplateParser
 
     function OldI18NTag_STR(&$res, $sub)
     {
-        $res['php'] = '$val .= ' . $sub['php'] . ';';
+        $res['php'] = '$val .= ' . $sub['php'] . ';' . Deprecation::class
+            . '::notice(\'5.4.0\', \'The <% _t() %> template syntax is deprecated. Use <%t %> instead.\', '
+            . Deprecation::class . '::SCOPE_GLOBAL);';
     }
 
     /* NamedArgument: Name:Word "=" Value:Argument */
