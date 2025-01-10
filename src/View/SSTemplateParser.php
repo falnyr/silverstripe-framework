@@ -4440,7 +4440,9 @@ class SSTemplateParser extends Parser implements TemplateParser
         if ($res['ArgumentCount'] != 0) {
             throw new SSTemplateParseException('Base_tag takes no arguments', $this);
         }
-        return '$val .= \\SilverStripe\\View\\SSViewer::get_base_tag($val);';
+        $code = '$isXhtml = preg_match(\'/<!DOCTYPE[^>]+xhtml/i\', $val);';
+        $code .= PHP_EOL . '$val .= \\SilverStripe\\View\\SSViewer::getBaseTag($isXhtml);';
+        return $code;
     }
 
     /**
