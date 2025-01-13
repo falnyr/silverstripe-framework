@@ -3748,7 +3748,9 @@ class SSTemplateParser extends Parser implements TemplateParser
 
     function OldI18NTag_STR(&$res, $sub)
     {
-        $res['php'] = '$val .= ' . $sub['php'] . ';';
+        $res['php'] = '$val .= ' . $sub['php'] . ';' . Deprecation::class
+            . '::notice(\'5.4.0\', \'The <% _t() %> template syntax is deprecated. Use <%t %> instead.\', '
+            . Deprecation::class . '::SCOPE_GLOBAL);';
     }
 
     /* NamedArgument: Name:Word "=" Value:Argument */
@@ -4438,7 +4440,9 @@ class SSTemplateParser extends Parser implements TemplateParser
         if ($res['ArgumentCount'] != 0) {
             throw new SSTemplateParseException('Base_tag takes no arguments', $this);
         }
-        return '$val .= \\SilverStripe\\View\\SSViewer::get_base_tag($val);';
+        $code = '$isXhtml = preg_match(\'/<!DOCTYPE[^>]+xhtml/i\', $val);';
+        $code .= PHP_EOL . '$val .= \\SilverStripe\\View\\SSViewer::getBaseTag($isXhtml);';
+        return $code;
     }
 
     /**
