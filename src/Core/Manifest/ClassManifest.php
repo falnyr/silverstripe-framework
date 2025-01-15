@@ -696,6 +696,7 @@ class ClassManifest
                 'classes' => $classes,
                 'interfaces' => $interfaces,
                 'traits' => $traits,
+                'enums' => $enums,
             ];
             $this->cache->set($key, $cache);
         }
