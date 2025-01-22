@@ -14,7 +14,7 @@ use SilverStripe\ORM\ValidationResult;
  * <code>
  * $pwdVal = new PasswordValidator();
  * $pwdValidator->setMinLength(7);
- * $pwdValidator->checkHistoricalPasswords(6);
+ * $pwdValidator->setHistoricCount(6);
  * $pwdValidator->setMinTestScore(3);
  * $pwdValidator->setTestNames(array("lowercase", "uppercase", "digits", "punctuation"));
  *
