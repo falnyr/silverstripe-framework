@@ -65,6 +65,13 @@ abstract class SapphireTest extends TestCase implements TestOnly
     protected static $fixture_file = null;
 
     /**
+     * Whether to set the i18n locale to en_US for supported modules before running the test.
+     * This should only be set to false if calling setI18nLocale() causes the test to
+     * throw an exception as part of calling setI18nLocale()
+     */
+    protected bool $doSetSupportedModuleLocaleToUS = true;
+
+    /**
      * @var Boolean If set to TRUE, this will force a test database to be generated
      * in {@link setUp()}. Note that this flag is overruled by the presence of a
      * {@link $fixture_file}, which always forces a database build.
@@ -1239,6 +1246,10 @@ abstract class SapphireTest extends TestCase implements TestOnly
      */
     private function setI18nLocale(): void
     {
+        if (!$this->doSetSupportedModuleLocaleToUS) {
+            $this->setLocaleToDefault();
+            return;
+        }
         $path = $this->getCurrentRelativePath();
         $packagistName = '';
         if (preg_match('#(^|/)vendor/([^/]+/[^/]+)/.+#', $path, $matches)) {
@@ -1261,9 +1272,16 @@ abstract class SapphireTest extends TestCase implements TestOnly
             i18n::config()->set('default_locale', 'en_US');
             i18n::set_locale('en_US');
         } else {
-            // Set the locale to the default_locale, which may have been set at project level to a
-            // non-en_US locale and the project unit tests expect that locale to be set
-            i18n::set_locale(i18n::config()->get('default_locale'));
+            $this->setLocaleToDefault();
         }
+    }
+
+    /**
+     * Set the locale to the default_locale, which may have been set at project level to a
+     * non-en_US locale and the project unit tests expect that locale to be set
+     */
+    private function setLocaleToDefault(): void
+    {
+        i18n::set_locale(i18n::config()->get('default_locale'));
     }
 }
