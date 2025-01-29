@@ -448,9 +448,11 @@ class FormField extends RequestHandler
      *
      * @see FormField::setSubmittedValue()
      * @return mixed
+     * @deprecated 5.4.0 Will be replaced by getFormattedValue() and getValue()
      */
     public function Value()
     {
+        Deprecation::notice('5.4.0', 'Will be replaced by getFormattedValue() and getValue()');
         return $this->value;
     }
 
